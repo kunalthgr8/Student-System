@@ -1,3 +1,5 @@
+import { Outlet } from "react-router-dom"
+
 function App() {
 
   return (
@@ -5,6 +7,7 @@ function App() {
       <h1 className="text-3xl font-bold underline">
       Student Managment System
     </h1>
+    <Outlet/>
     </>
   )
 }

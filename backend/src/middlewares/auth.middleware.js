@@ -5,28 +5,39 @@ import { User } from "../models/user.model.js";
 
 export const verifyJWT = asyncHandler(async (req, _, next) => {
   try {
+    // Extract token from cookies or authorization header
     const token =
       req.cookies?.accessToken ||
       req.header("Authorization")?.replace("Bearer ", "");
 
-    // console.log(token);
     if (!token) {
-      throw new ApiError(401, "Unauthorized request");
+      throw new ApiError(401, "Unauthorized request. No token provided.");
     }
 
+    // Verify token and decode it
     const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 
-    const user = await User.findById(decodedToken?._id).select(
+    // Find user by decoded token's ID and exclude sensitive fields
+    const user = await User.findById(decodedToken._id).select(
       "-password -refreshToken"
     );
 
     if (!user) {
-      throw new ApiError(401, "Invalid Access Token");
+      throw new ApiError(401, "Invalid Access Token. User not found.");
     }
 
+    // Attach the user to the request object
     req.user = user;
+
     next();
   } catch (error) {
-    throw new ApiError(401, error?.message || "Invalid access token");
+    // Handle specific JWT errors like token expiration and invalid signature
+    if (error.name === "TokenExpiredError") {
+      throw new ApiError(401, "Access token has expired.");
+    } else if (error.name === "JsonWebTokenError") {
+      throw new ApiError(401, "Invalid access token.");
+    } else {
+      throw new ApiError(401, error?.message || "Authentication failed.");
+    }
   }
 });

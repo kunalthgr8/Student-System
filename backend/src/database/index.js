@@ -8,7 +8,7 @@ const connectDB = async () => {
     );
     console.log("Connected to the database", connectionInstance.connections[0].name);
   } catch (error) {
-    console.log("MONGODB connection error in db/index.js", error);
+    console.log("MONGODB connection error in db/index.js", error.message);
     process.exit(1);
   }
 };

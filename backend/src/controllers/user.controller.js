@@ -56,10 +56,12 @@ const registerUser = asyncHandler(async (req, res, next) => {
 
 const loginUser = asyncHandler(async (req, res, next) => {
   const { email, password } = req.body;
+  console.log("Email : " ,email);
   if (!email || !password) {
     throw new ApiError(400, "All fields are required");
   }
   const existingUser = await User.findOne({ email });
+  console.log("User : " ,existingUser);
 
   if (!existingUser) {
     throw new ApiError(400, "User does not exist");

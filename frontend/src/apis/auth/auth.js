@@ -31,11 +31,12 @@ export class AuthService {
 
   async login({ email, password }) {
     try {
+      // console.log("backendURL : ",backendURL);
       const response = await axios.post(`${backendURL}/api/v1/users/login`, {
         email,
         password,
       });
-
+      // console.log("REsponse after Login :",response);
       const { accessToken, refreshToken } = response.data.data;
       Cookies.set("accessToken", accessToken);
       Cookies.set("refreshToken", refreshToken);

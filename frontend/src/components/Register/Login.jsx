@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Input, Button } from "../index";
-import toast from "react-hot-toast"; // For notifications
-import authService from "../../apis/auth/auth.js"; // Auth service for login
-import { useNavigate } from "react-router-dom"; // For navigation
-import { useDispatch } from "react-redux"; // Redux hook
-import { login as authLogin } from "../../app/features/authSlice.js"; // Redux action
+import toast from "react-hot-toast"; 
+import authService from "../../apis/auth/auth.js";
+import { useNavigate } from "react-router-dom"; 
+import { useDispatch } from "react-redux";
+import { login as authLogin } from "../../app/features/authSlice.js"; 
 
 function Login() {
   const [formData, setFormData] = useState({
@@ -12,54 +12,47 @@ function Login() {
     password: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState(""); // Handle error state
-  const dispatch = useDispatch(); // For Redux dispatch
-  const navigate = useNavigate(); // For redirecting
+  const [error, setError] = useState(""); 
+  const dispatch = useDispatch(); 
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
+    setFormData((prevData) => ({
+      ...prevData,
       [name]: value,
-    });
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    
     const { email, password } = formData;
 
-    // Basic validation
     if (!email || !password) {
       toast.error("Please fill in all fields");
       return;
     }
 
-    setIsSubmitting(true); // Set loading state
-    setError(""); // Clear error state
+    setIsSubmitting(true); 
+    setError("");
 
     try {
-      const response = await authService.login({ email, password }); // Use the imported login function
-      if (response && response.status === 200) {
+      const response = await authService.login({ email, password });
+      
+      if (response) {
         toast.success("Login successful");
 
-        // Fetch user data (assuming your auth service has a method for it)
         const userData = await authService.getCurrentUser();
-
-        // Store user data in localStorage and Redux
-        // localStorage.setItem("userData", JSON.stringify(userData.data));
-        dispatch(authLogin(userData.data)); // Dispatch to Redux store
-
-        // Redirect to home or dashboard
+        dispatch(authLogin(userData)); 
         navigate("/");
-      } else {
-        toast.error("Login failed");
-      }
+      } 
     } catch (error) {
-      toast.error(error.message || "Login failed");
-      setError(error.message); // Set error state if needed
+      const errorMessage = error.response?.data?.message || "Login failed";
+      toast.error(errorMessage); 
+      setError(errorMessage); 
     } finally {
-      setIsSubmitting(false); // Reset loading state
+      setIsSubmitting(false); 
     }
   };
 
@@ -94,7 +87,7 @@ function Login() {
             value={formData.password}
             onChange={handleInputChange}
           />
-          {error && <p className="text-red-500 text-sm">{error}</p>} {/* Error display */}
+          {error && <p className="text-red-500 text-sm">{error}</p>} 
         </div>
         <div className="p-4 pt-3">
           <Button

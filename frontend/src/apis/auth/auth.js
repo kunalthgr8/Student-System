@@ -9,13 +9,15 @@ export class AuthService {
     // Initialization logic (if needed)
   }
 
-  async createAccount({ fullname, email, password }) {
+  async createAccount({ fullName: fullname, email, password }) {
     try {
-      const response = await axios.post(`${backendURL}/api/v1/users/register`, {
+      const response = await axios.post(`${backendURL}/api/v1/users/signup`, {
         fullname,
         email,
         password,
       });
+
+      console.log("Response after Registration:", response);
 
       if (response.data.statusCode === 201) {
         // If registration is successful, auto-login the user
@@ -31,15 +33,17 @@ export class AuthService {
 
   async login({ email, password }) {
     try {
-      // console.log("backendURL : ",backendURL);
       const response = await axios.post(`${backendURL}/api/v1/users/login`, {
         email,
         password,
       });
-      // console.log("REsponse after Login :",response);
+
       const { accessToken, refreshToken } = response.data.data;
-      Cookies.set("accessToken", accessToken);
-      Cookies.set("refreshToken", refreshToken);
+      console.log("Response after Login:", response);
+      console.log("Access Token:", accessToken);
+      console.log("Refresh Token:", refreshToken);
+      Cookies.set("accessToken", accessToken, { secure: true, sameSite: 'Strict' });
+      Cookies.set("refreshToken", refreshToken, { secure: true, sameSite: 'Strict' });
 
       return response.data;
     } catch (error) {
@@ -53,7 +57,7 @@ export class AuthService {
       const accessToken = Cookies.get("accessToken");
       if (!accessToken) throw new Error("Access token is missing");
 
-      const response = await axios.get(`${backendURL}/api/v1/users/me`, {
+      const response = await axios.get(`${backendURL}/api/v1/users/current-user`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -141,6 +145,32 @@ export class AuthService {
     } catch (error) {
       const errorMessage =
         error.response?.data?.message || "User details update failed";
+      throw new Error(errorMessage);
+    }
+  }
+
+  async refreshAccessToken() {
+    try {
+      const refreshToken = Cookies.get("refreshToken");
+      if (!refreshToken) throw new Error("Refresh token is missing");
+
+      const response = await axios.post(
+        `${backendURL}/api/v1/users/refresh-token`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${refreshToken}`,
+          },
+        }
+      );
+
+      const { accessToken, refreshToken: newRefreshToken } = response.data.data;
+      Cookies.set("accessToken", accessToken, { secure: true, sameSite: 'Strict' });
+      Cookies.set("refreshToken", newRefreshToken, { secure: true, sameSite: 'Strict' });
+
+      return { accessToken, refreshToken: newRefreshToken };
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || "Token refresh failed";
       throw new Error(errorMessage);
     }
   }

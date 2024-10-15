@@ -14,11 +14,19 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/login",
-        element: <Login />,
+        element: (
+          // <AuthLayout authentication={false}>/
+            <Login />
+          // </AuthLayout>
+        ),
       },
       {
         path: "/signup",
-        element: <Register />,
+        element: (
+          // <AuthLayout authentication={false}>
+            <Register />
+          // </AuthLayout>
+        ),
       },
     ],
   },

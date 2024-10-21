@@ -2,7 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-*{
+* {
     font-family: "Lato", sans-serif;
-    background-color: #f5f5f5;
+    background-color: #eef2f6;
+}
+
+.bg-transparent-children * {
+    background-color: transparent;
 }

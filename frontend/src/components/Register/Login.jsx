@@ -57,22 +57,23 @@ function Login() {
   };
 
   return (
-    <div className="flex w-1/3 h-full mt-20 gap-5 flex-col justify-center text-center self-center border border-nav-active p-5 rounded-lg">
-      <h1 className="flex justify-center text-center font-bold tracking-widest text-4xl">
+    <div className="flex w-1/3 h-full mt-20 gap-5 flex-col justify-center text-center self-center px-5 py-10 rounded-lg bg-nav-white">
+      <h1 className="flex justify-center text-center font-bold tracking text-primary-color text-4xl bg-nav-white">
         Login
       </h1>
+      <span className="bg-nav-white text-xl text-heading-color">Enter your credentials to continue</span>
       <form
         onSubmit={handleSubmit}
-        className="w-full flex flex-col justify-center self-center"
+        className="w-full flex flex-col justify-center self-center bg-nav-white"
       >
-        <div className="flex flex-col p-4 gap-4">
+        <div className="flex flex-col p-4 gap-4 bg-nav-white">
           <Input
             label="Email"
             type="email"
             name="email"
             placeholder="Email"
             aria-label="Email"
-            className="text-xl"
+            className="text-xl bg-nav-white placeholder:text-lg"
             value={formData.email}
             onChange={handleInputChange}
           />
@@ -83,22 +84,24 @@ function Login() {
             name="password"
             placeholder="Password"
             aria-label="Password"
-            className="text-xl"
+            className="text-xl bg-nav-white placeholder:text-lg"
             value={formData.password}
             onChange={handleInputChange}
           />
-          {error && <p className="text-red-500 text-sm">{error}</p>} 
+          {error && <p className="text-red-500 text-sm bg-nav-white">{error}</p>} 
         </div>
-        <div className="p-4 pt-3">
+        <div className="p-4 pt-3 bg-nav-white">
           <Button
             type="submit"
-            className="rounded-xl text-xl bg-text-green hover:bg-button-color text-nav-white outline-none focus:bg-gray-50 duration-200 w-full"
+            className="rounded-xl text-lg bg-primary-color hover:bg-[#6235b1] text-nav-white outline-none focus:bg-gray-50 duration-200 w-full"
             disabled={isSubmitting}
           >
             {isSubmitting ? "Submitting..." : "Submit"}
           </Button>
         </div>
       </form>
+      <hr className="text-nav-active w-[80%] m-auto" />
+      <span className="text-primary-color font-bold bg-nav-white cursor-pointer" onClick={() => navigate("/signup")}>Don't have an account?</span>
     </div>
   );
 }

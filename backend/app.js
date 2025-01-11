@@ -34,10 +34,12 @@ app.use("/uploads", express.static(uploadsDir));
 //routes import
 import userRouter from './src/routes/user.route.js';
 import fileUploadRouter from './src/routes/fileUpload.route.js';
+import fetchDetails from "./src/routes/fetchDetails.route.js";
 
 //routes declaration
 app.use("/api/v1/users", userRouter);
 app.use("/api/upload", fileUploadRouter);
+app.use("/api/data", fetchDetails);
 
 
 export { app };

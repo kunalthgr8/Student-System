@@ -28,7 +28,7 @@ if (!fs.existsSync(uploadsDir)) {
 }
 
 // Serve static files from 'uploads' folder
-app.use("/uploads", express.static(uploadsDir));
+app.use("/src/uploads", express.static(uploadsDir));
 
 
 //routes import

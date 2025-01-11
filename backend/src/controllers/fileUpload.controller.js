@@ -10,10 +10,10 @@ export const uploadFile = async (req, res) => {
       return res.status(400).send({ message: "No file uploaded" });
     }
 
-    const filePath = path.resolve(`uploads/${req.file.filename}`);
+    const filePath = path.resolve(`src/uploads/${req.file.filename}`);
     const fileExtension = path.extname(req.file.filename).toLowerCase();
 
-    console.log(filePath);
+    // console.log(filePath);
 
     let feeDetailsData = [];
 
@@ -21,11 +21,11 @@ export const uploadFile = async (req, res) => {
       const workbook = xlsx.readFile(filePath);
       const sheetName = workbook.SheetNames[0];
       const sheetData = xlsx.utils.sheet_to_json(workbook.Sheets[sheetName], {
-        header: 1, 
-        defval: null, 
+        header: 1,
+        defval: null,
       });
 
-      const headers = sheetData[0]; 
+      const headers = sheetData[0];
       const rows = sheetData.slice(1);
 
       feeDetailsData = rows
@@ -55,13 +55,17 @@ export const uploadFile = async (req, res) => {
       return res.status(400).send({ message: "Unsupported file format. Upload .xlsx or .csv only." });
     }
 
-    console.log(feeDetailsData);
+    // console.log(feeDetailsData);
 
     // Insert data into MongoDB
     await feeDetailsModel.insertMany(feeDetailsData);
 
     // Delete the uploaded file
-    fs.unlinkSync(filePath);
+    fs.unlink(filePath, (err) => {
+      if (err) {
+        console.error(`Error deleting file: ${filePath}`, err);
+      }
+    });
 
     res.status(200).send({ message: "File processed and data uploaded successfully" });
   } catch (error) {

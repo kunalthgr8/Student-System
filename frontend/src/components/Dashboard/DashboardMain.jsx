@@ -6,10 +6,8 @@ const DashboardMain = () => {
         <div className="w-full h-full">
             <Header />
             <div className="flex">
-                <Sidebar  />
-                <div className="flex-1 p-4">
-                    Main Content
-                </div>
+                <Sidebar selected="Dashboard" />
+                Main content
             </div>
         </div>
     );

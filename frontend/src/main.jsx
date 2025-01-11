@@ -7,6 +7,7 @@ import { Login, Register } from "./components/index.js";
 import { Provider } from "react-redux";
 import store from "./app/store.js";
 import DashboardMain from "./components/Dashboard/DashboardMain.jsx";
+import UploadData from "./components/UploadData/UploadData.jsx";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,14 @@ const router = createBrowserRouter([
         element: (
           // <AuthLayout authentication={false}>
             <DashboardMain />
+          // </AuthLayout>
+        ),
+      },
+      {
+        path: "/uploadData",
+        element: (
+          // <AuthLayout authentication={false}>
+            <UploadData />
           // </AuthLayout>
         ),
       },

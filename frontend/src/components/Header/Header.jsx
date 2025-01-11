@@ -12,7 +12,7 @@ const Header = () => {
     const [isFocused, setIsFocused] = useState(false);
 
     return (
-        <div className="sticky top-0 left-0 z-10 flex items-center gap-3 w-full p-4 bg-nav-white">
+        <div className="sticky top-0 left-0 z-10 flex items-center gap-3 w-full h-20 p-4 bg-nav-white">
             <div className="border-none p-1 bg-primary-light-color text-primary-color rounded-md hover:bg-primary-color hover:text-nav-white cursor-pointer">
                 <IoMenuOutline className="text-2xl bg-[transparent] transition ease-out duration-500" />
             </div>
@@ -36,7 +36,7 @@ const Header = () => {
                 <div className="border-none p-1 bg-primary-light-color text-primary-color rounded-md hover:bg-primary-color hover:text-nav-white cursor-pointer">
                     <GoBell className="text-xl bg-[transparent] m-1 transition ease-out duration-500" />
                 </div>
-                <div className="p-3 rounded-full flex gap-4 items-center cursor-pointer text-secondary-color hover:bg-secondary-color hover:text-nav-white">
+                <div className="p-3 rounded-full flex gap-4 items-center cursor-pointer text-secondary-color hover:bg-secondary-color hover:text-nav-white transition ease-out duration-500">
                     <FaUser className="text-xl bg-[transparent] mx-1 text-[#000000]" />
                     <GoGear className="font-bold text-2xl mx-1 bg-[transparent]"/>
                 </div>

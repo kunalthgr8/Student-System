@@ -22,15 +22,6 @@ app.use(express.urlencoded({extended: true, limit: "16kb"}))
 app.use(cookieParser())
 
 
-const uploadsDir = path.join(__dirname, "uploads");
-if (!fs.existsSync(uploadsDir)) {
-    fs.mkdirSync(uploadsDir);
-}
-
-// Serve static files from 'uploads' folder
-app.use("/src/uploads", express.static(uploadsDir));
-
-
 //routes import
 import userRouter from './src/routes/user.route.js';
 import fileUploadRouter from './src/routes/fileUpload.route.js';

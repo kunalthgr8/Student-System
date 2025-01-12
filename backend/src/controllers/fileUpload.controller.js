@@ -3,6 +3,7 @@ import path from "path";
 import xlsx from "xlsx";
 import csvParser from "csv-parser";
 import feeDetailsModel from "../models/feeDetails.model.js";
+import { feeDetailsMapping } from "../constants.js";
 
 export const uploadFile = async (req, res) => {
   try {
@@ -57,8 +58,11 @@ export const uploadFile = async (req, res) => {
 
     // console.log(feeDetailsData);
 
+    // Map header row data to the MongoDB schema
+    const mappedData = feeDetailsData.map(feeDetailsMapping);
+    
     // Insert data into MongoDB
-    await feeDetailsModel.insertMany(feeDetailsData);
+    await feeDetailsModel.insertMany(mappedData);
 
     // Delete the uploaded file
     fs.unlink(filePath, (err) => {

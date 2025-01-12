@@ -20,6 +20,38 @@ const DashboardMain = () => {
             });
     }, []);
 
+    const columns = [
+        { label: "Availing Hostel Facility", key: 'availingHostel', rowWidth: "100" },
+        { label: "ID Number", key: 'idNumber', rowWidth: "120" },
+        { label: "Name of the Candidate", key: 'candidateName', rowWidth: "200" },
+        { label: "Academic Session", key: 'academicSession' },
+        { label: "Program", key: 'program' },
+        { label: "Semester", key: 'semester' },
+        { label: "Category", key: 'category' },
+        { label: "Admission Fee", key: 'admissionFee' },
+        { label: "ID Card and Certificates Fee", key: 'idCardFee' },
+        { label: "Library Fee", key: 'libraryFee' },
+        { label: "Celebration Fee", key: 'celebrationFee' },
+        { label: "Training & Placement Fee", key: 'placementFee' },
+        { label: "Alumni Life Membership", key: 'alumniMembership' },
+        { label: "Caution Money Deposite", key: 'cautionMoneyDeposit' },
+        { label: "Registration Fee", key: 'registrationFee' },
+        { label: "Tuition Fee", key: 'tuitionFee' },
+        { label: "CoSA Fee", key: 'coSAFee' },
+        { label: "Health Facility Charges", key: 'healthFacility' },
+        { label: "Other Fee", key: 'otherFee' },
+        { label: "Student Welfare Fund (Not Fee)", key: 'studentWelfareFund' },
+        { label: "Insurance Premium", key: 'insurancePremium' },
+        { label: "Hostel Admission Fee", key: 'hostelAdmissionFee' },
+        { label: "Hostel License Fee", key: 'hostelLicenseFee' },
+        { label: "Hostel and Mess Establishment Charges", key: 'establishmentCharges' },
+        { label: "Dinning Charges", key: 'diningCharges' },
+        { label: "Gross Total Fee", key: 'grossTotalFee' },
+        { label: "Fee Waiver", key: 'feeWaiver' },
+        { label: "Seat Booking/ Dining Fee Adjustment", key: 'feeAdjustment' },
+        { label: "Payable Fee", key: 'payableFee' }
+    ];
+
 
     if (loading) return <p>Loading...</p>;
 
@@ -33,81 +65,44 @@ const DashboardMain = () => {
                     style={{ maxWidth: "calc(100% - 16rem)", left: "16rem", height: "calc(100vh - 5rem)" }}
                 >
                     <h1 className="text-2xl font-bold m-4 text-primary-color">Student Details</h1>
-                    <div className="overflow-x-auto hide-scrollbar">
+                    {studentsData.length > 0 && <div className="overflow-x-auto hide-scrollbar">
                         <table border="1" className="min-w-full h-full border-collapse">
                             <thead>
                                 <tr className="text-primary-color">
-                                    <th className="bg-primary-light-color px-2 border border-heading-color min-w-[40px]">Serial Number</th>
-                                    <th className="bg-primary-light-color px-2 border border-heading-color min-w-[100px]">Availing Hostel Facility</th>
-                                    <th className="bg-primary-light-color px-2 border border-heading-color min-w-[120px]">ID Number</th>
-                                    <th className="bg-primary-light-color px-2 border border-heading-color min-w-[200px]">Name of the Candidate</th>
-                                    <th className="bg-primary-light-color px-2 border border-heading-color min-w-[120px]">Academic Session</th>
-                                    <th className="bg-primary-light-color px-2 border border-heading-color min-w-[120px]">Program</th>
-                                    <th className="bg-primary-light-color px-2 border border-heading-color min-w-[120px]">Semester</th>
-                                    <th className="bg-primary-light-color px-2 border border-heading-color min-w-[120px]">Category</th>
-                                    <th className="bg-primary-light-color px-2 border border-heading-color min-w-[120px]">Admission Fee</th>
-                                    <th className="bg-primary-light-color px-2 border border-heading-color min-w-[120px]">ID Card and Certificates Fee</th>
-                                    <th className="bg-primary-light-color px-2 border border-heading-color min-w-[120px]">Library Fee</th>
-                                    <th className="bg-primary-light-color px-2 border border-heading-color min-w-[120px]">Celebration Fee</th>
-                                    <th className="bg-primary-light-color px-2 border border-heading-color min-w-[120px]">Training & Placement Fee</th>
-                                    <th className="bg-primary-light-color px-2 border border-heading-color min-w-[120px]">Alumni Life Membership</th>
-                                    <th className="bg-primary-light-color px-2 border border-heading-color min-w-[120px]">Caution Money Deposite</th>
-                                    <th className="bg-primary-light-color px-2 border border-heading-color min-w-[120px]">Registration Fee</th>
-                                    <th className="bg-primary-light-color px-2 border border-heading-color min-w-[120px]">Tuition Fee</th>
-                                    <th className="bg-primary-light-color px-2 border border-heading-color min-w-[120px]">CoSA Fee</th>
-                                    <th className="bg-primary-light-color px-2 border border-heading-color min-w-[120px]">Health Facility Charges</th>
-                                    <th className="bg-primary-light-color px-2 border border-heading-color min-w-[120px]">Other Fee</th>
-                                    <th className="bg-primary-light-color px-2 border border-heading-color min-w-[120px]">Student Welfare Fund (Not Fee)</th>
-                                    <th className="bg-primary-light-color px-2 border border-heading-color min-w-[120px]">Insurance Premium</th>
-                                    <th className="bg-primary-light-color px-2 border border-heading-color min-w-[120px]">Hostel Admission Fee</th>
-                                    <th className="bg-primary-light-color px-2 border border-heading-color min-w-[120px]">Hostel License Fee</th>
-                                    <th className="bg-primary-light-color px-2 border border-heading-color min-w-[120px]">Hostel and Mess Establishment Charges</th>
-                                    <th className="bg-primary-light-color px-2 border border-heading-color min-w-[120px]">Dinning Charges</th>
-                                    <th className="bg-primary-light-color px-2 border border-heading-color min-w-[120px]">Gross Total Fee</th>
-                                    <th className="bg-primary-light-color px-2 border border-heading-color min-w-[120px]">Fee Waiver</th>
-                                    <th className="bg-primary-light-color px-2 border border-heading-color min-w-[120px]">Seat Booking/ Dining Fee Adjustment</th>
-                                    <th className="bg-primary-light-color px-2 border border-heading-color min-w-[120px]">Payable Fee</th>
+                                    <th
+                                        className="bg-primary-light-color px-2 border border-heading-color min-w-[40px]">
+                                        Serial Number
+                                    </th>
+                                    {columns.map((column, index) => (
+                                        <th key={index}
+                                            className={`bg-primary-light-color px-2 border border-heading-color min-w-[${column.rowWidth || 120}px]`}
+                                        >
+                                            {column.label}
+                                        </th>
+                                    ))}
                                 </tr>
                             </thead>
                             <tbody>
-                                {studentsData.map((student) => (
-                                    <tr key={student._id} className="text-center hover:text-primary-color">
-                                        <td className="px-2 py-2">{student.S.N[""]}</td>
-                                        <td className="px-2 py-2">{student["Availing Hostel Facility"]}</td>
-                                        <td className="px-2 py-2">{student["ID Number"]}</td>
-                                        <td className="px-2 py-2">{student["Name of the Candidate"]}</td>
-                                        <td className="px-2 py-2">{student["Academic Session"]}</td>
-                                        <td className="px-2 py-2">{student["Program"]}</td>
-                                        <td className="px-2 py-2">{student["Semester"]}</td>
-                                        <td className="px-2 py-2">{student["Category"]}</td>
-                                        <td className="px-2 py-2">{student["Admission Fee"]}</td>
-                                        <td className="px-2 py-2">{student["ID Card and Certificates Fee"]}</td>
-                                        <td className="px-2 py-2">{student["Library Fee"]}</td>
-                                        <td className="px-2 py-2">{student["Celebration Fee"]}</td>
-                                        <td className="px-2 py-2">{student["Training & Placement Fee"]}</td>
-                                        <td className="px-2 py-2">{student["Alumni Life Membership"]}</td>
-                                        <td className="px-2 py-2">{student["Caution Money Deposite"]}</td>
-                                        <td className="px-2 py-2">{student["Registration Fee"]}</td>
-                                        <td className="px-2 py-2">{student["Tuition Fee"]}</td>
-                                        <td className="px-2 py-2">{student["CoSA Fee"]}</td>
-                                        <td className="px-2 py-2">{student["Health Facility Charges"]}</td>
-                                        <td className="px-2 py-2">{student["Other Fee"]}</td>
-                                        <td className="px-2 py-2">{student["Student Welfare Fund (Not Fee)"]}</td>
-                                        <td className="px-2 py-2">{student["Insurance Premium"]}</td>
-                                        <td className="px-2 py-2">{student["Hostel Admission Fee"]}</td>
-                                        <td className="px-2 py-2">{student["Hostel License Fee"]}</td>
-                                        <td className="px-2 py-2">{student["Hostel and Mess Establishment Charges"]}</td>
-                                        <td className="px-2 py-2">{student["Dinning Charges"]}</td>
-                                        <td className="px-2 py-2">{student["Gross Total Fee"]}</td>
-                                        <td className="px-2 py-2">{student["Fee Waiver"]}</td>
-                                        <td className="px-2 py-2">{student["Seat Booking/ Dining Fee Adjustment"]}</td>
-                                        <td className="px-2 py-2">{student["Payable Fee"]}</td>
+                                {studentsData.map((student, index) => (
+                                    <tr
+                                        key={student._id}
+                                        className="text-center hover:text-primary-color"
+                                    >
+                                        <td className="px-2 py-2">{index + 1}</td>
+                                        {columns.map((column, index) => (
+                                            <td
+                                                key={index}
+                                                className="px-2 py-2"
+                                            >
+                                                {student[column.key]}
+                                            </td>
+                                        ))}
                                     </tr>
                                 ))}
                             </tbody>
                         </table>
-                    </div>
-
+                    </div>}
+                    {studentsData.length === 0 && <p>No data available</p>}
                 </div>
             </div>
         </div>

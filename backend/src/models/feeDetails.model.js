@@ -2,123 +2,123 @@ import mongoose, { Schema } from "mongoose";
 
 const feeDetailsSchema = new Schema(
     {
-        'S.N.': {
+        serialNumber: {
             type: Number,
             required: true
         },
-        'Availing Hostel Facility': {
+        availingHostel: {
             type: String,
             enum: ['Yes', 'No'],
             required: true
         },
-        'ID Number': {
+        idNumber: {
             type: String,
             required: true,
             unique: true
         },
-        'Name of the Candidate': {
+        candidateName: {
             type: String,
             required: true
         },
-        'Academic Session': {
+        academicSession: {
             type: String,
             required: true
         },
-        'Program': {
+        program: {
             type: String,
             required: true
         },
-        'Semester': {
+        semester: {
             type: Number,
             required: true
         },
-        'Category': {
+        category: {
             type: String,
             required: true
         },
-        'Admission Fee': {
+        admissionFee: {
             type: Number,
             required: true
         },
-        'ID Card and Certificates Fee': {
+        idCardFee: {
             type: Number,
             required: true
         },
-        'Library Fee': {
+        libraryFee: {
             type: Number,
             required: true
         },
-        'Celebration Fee': {
+        celebrationFee: {
             type: Number,
             required: true
         },
-        'Training & Placement Fee': {
+        placementFee: {
             type: Number,
             required: true
         },
-        'Alumni Life Membership': {
+        alumniMembership: {
             type: Number,
             required: true
         },
-        'Caution Money Deposite': {
+        cautionMoneyDeposit: {
             type: Number,
             required: true
         },
-        'Registration Fee': {
+        registrationFee: {
             type: Number,
             required: true
         },
-        'Tuition Fee': {
+        tuitionFee: {
             type: Number,
             required: true
         },
-        'CoSA Fee': {
+        coSAFee: {
             type: Number,
             required: true
         },
-        'Health Facility Charges': {
+        healthFacility: {
             type: Number,
             required: true
         },
-        'Other Fee': {
+        otherFee: {
             type: Number,
             required: true
         },
-        'Student Welfare Fund (Not Fee)': {
+        studentWelfareFund: {
             type: Number,
             required: true
         },
-        'Insurance Premium': {
+        insurancePremium: {
             type: Number,
             required: true
         },
-        'Hostel Admission Fee': {
+        hostelAdmissionFee: {
             type: Number,
             required: true
         },
-        'Hostel License Fee': {
+        hostelLicenseFee: {
             type: Number,
             required: true
         },
-        'Hostel and Mess Establishment Charges': {
+        establishmentCharges: {
             type: Number,
             required: true
         },
-        'Dinning Charges': {
+        diningCharges: {
             type: Number,
             required: true
         },
-        'Gross Total Fee': {
+        grossTotalFee: {
             type: Number,
             required: true
         },
-        'Fee Waiver': {
+        feeWaiver: {
             type: Number
         },
-        'Seat Booking/ Dining Fee Adjustment': {
+        feeAdjustment: {
             type: Number
         },
-        'Payable Fee': {
+        payableFee: {
             type: Number,
             required: true
         }

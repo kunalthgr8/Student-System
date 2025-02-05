@@ -1,5 +1,6 @@
 import express from 'express';
 import feeDetails from '../models/feeDetails.model.js';
+import { getFilteredStudents } from '../controllers/feeDetails.controller.js';
 
 const router = express.Router();
 
@@ -13,5 +14,7 @@ router.get('/students', async (req, res) => {
     res.status(500).json({ message: "Error fetching student data" });
   }
 });
+
+router.get('/students/filtered', getFilteredStudents);
 
 export default router;

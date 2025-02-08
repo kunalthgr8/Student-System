@@ -1,4 +1,7 @@
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchStudents } from "../../app/features/studentSlice";
+
 import Header from "../Header/Header";
 import Sidebar from "../Sidebar/Sidebar";
 import Loader from "../../assets/Loader.webm";
@@ -11,50 +14,23 @@ import { saveAs } from "file-saver";
 import { HiOutlineDownload } from "react-icons/hi";
 
 
-const DashboardMain = () => {
-
-    const [studentsData, setStudentsData] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [hostelFacility, setHostelFacility] = useState("");
-    const [academicSession, setAcademicSession] = useState("");
-    const [program, setProgram] = useState("");
-    const [semester, setSemester] = useState("");
-    const [category, setCategory] = useState("");
+const DashboardMain = ({ searchQuery, hostelFacility, academicSession, program, semester, category }) => {
+    const dispatch = useDispatch();
+    const { studentsData, loading, filters = {} } = useSelector((state) => state.students);
 
     useEffect(() => {
-        fetch("http://localhost:8000/api/data/students")
-            .then(response => response.json())
-            .then(data => {
-                setStudentsData(data);
-                setLoading(false);
-            })
-            .catch(error => {
-                console.error("Error fetching data:", error);
-                setLoading(false);
-            });
-    }, []);
+        dispatch(fetchStudents(filters));
+    }, [dispatch, filters]);
 
-    const applyFilters = (hostelFacility, academicSession, program, semester, category) => {
-        const queryParams = new URLSearchParams({
-            hostelFacility,
-            academicSession,
-            program,
-            semester,
-            category,
-        }).toString();
+    // const searchQuery = useSelector((state) => state.search.query);
 
-        setLoading(true);
-        fetch(`http://localhost:8000/api/data/students/filtered?${queryParams}`)
-            .then(response => response.json())
-            .then(data => {
-                setStudentsData(data);
-                setLoading(false);
-            })
-            .catch(error => {
-                console.error("Error fetching filtered data:", error);
-                setLoading(false);
-            });
-    };
+    // const [studentsData, setStudentsData] = useState([]);
+    // const [loading, setLoading] = useState(true);
+    // const [hostelFacility, setHostelFacility] = useState("");
+    // const [academicSession, setAcademicSession] = useState("");
+    // const [program, setProgram] = useState("");
+    // const [semester, setSemester] = useState("");
+    // const [category, setCategory] = useState("");
 
     const columns = [
         { label: "Availing Hostel Facility", key: 'availingHostel', rowWidth: "100" },
@@ -90,7 +66,15 @@ const DashboardMain = () => {
 
 
     const exportToExcel = () => {
-        const worksheet = XLSX.utils.json_to_sheet(studentsData);
+        const formattedData = studentsData.map((student, index) => ({
+            serialNumber: index + 1,
+            ...columns.reduce((acc, col) => {
+                acc[col.label] = student[col.key] || "";
+                return acc;
+            }, {})
+        }));
+
+        const worksheet = XLSX.utils.json_to_sheet(formattedData);
         const workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
         const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
@@ -121,62 +105,10 @@ const DashboardMain = () => {
                 >
                     <h1 className="w-full text-2xl font-bold m-4 text-primary-color">Student Details</h1>
                     <div
-                        className="absolute z-10 top-5 right-5 w-9 border-none p-1 bg-primary-light-color text-primary-color rounded-md hover:bg-primary-color hover:text-nav-white cursor-pointer"
+                        className="absolute z-1 top-5 right-5 w-9 border-none p-1 bg-primary-light-color text-primary-color rounded-md hover:bg-primary-color hover:text-nav-white cursor-pointer"
                         onClick={exportToExcel}
                     >
                         <HiOutlineDownload className="text-xl bg-[transparent] m-1 transition ease-out duration-500" />
-                    </div>
-                    <div id="filterBox">
-                        <p>Choose the options from fields below</p>
-                        <div id="filterFields" className="grid grid-cols-2 gap-4 p-4">
-                            <FilterFields
-                                labelHTML="hostelFacility"
-                                labelTag="Hostel Facility: "
-                                selectID="hostelFacility"
-                                options={["All", "Yes", "No"]}
-                                value={hostelFacility}
-                                onChange={setHostelFacility}
-                            />
-                            <FilterFields
-                                labelHTML="academicSession"
-                                labelTag="Academic Session: "
-                                selectID="academicSession"
-                                options={["All", "2023-24M", "2023-24W", "2024-25M", "2024-25W"]}
-                                value={academicSession}
-                                onChange={setAcademicSession}
-                            />
-                            <FilterFields
-                                labelHTML="program"
-                                labelTag="Program: "
-                                selectID="program"
-                                options={["All", "B.Tech", "M.Tech", "M.Sc.", "PhD"]}
-                                value={program}
-                                onChange={setProgram}
-                            />
-                            <FilterFields
-                                labelHTML="semester"
-                                labelTag="Semester: "
-                                selectID="semester"
-                                options={["All", "1", "2", "3", "4", "5", "6", "7", "8"]}
-                                value={semester}
-                                onChange={setSemester}
-                            />
-                            <FilterFields
-                                labelHTML="category"
-                                labelTag="Category: "
-                                selectID="category"
-                                options={["All", "General", "OBC-NCL", "SC", "ST"]}
-                                value={category}
-                                onChange={setCategory}
-                            />
-                        </div>
-                        <Button
-                            type="submit"
-                            className="rounded-xl text-lg bg-primary-color hover:bg-[#6235b1] text-nav-white outline-none focus:bg-gray-50 duration-200 w-[20%] my-4"
-                            onClick={() => applyFilters(hostelFacility, academicSession, program, semester, category)}
-                        >
-                            Apply Filter
-                        </Button>
                     </div>
                     {studentsData.length > 0 && <div className="overflow-x-auto hide-scrollbar">
                         <table border="1" className="min-w-full h-full border-collapse">

@@ -13,7 +13,7 @@ import FilterFields from "../Dashboard/FilterFields";
 import Button from "../Button/Button";
 
 const Header = () => {
-    
+
     const dispatch = useDispatch();
     const searchQuery = useSelector((state) => state.students.filters.searchQuery);
     const hostelFacility = useSelector((state) => state.students.filters.hostelFacility);
@@ -38,8 +38,8 @@ const Header = () => {
         setLocalSemester(semester);
         setLocalCategory(category);
     }, [hostelFacility, academicSession, program, semester, category]);
-    
-    
+
+
     const handleSearchChange = (e) => {
         setLocalSearchQuery(e.target.value);
     };
@@ -72,6 +72,28 @@ const Header = () => {
         setLocalProgram(newFilters.program);
         setLocalSemester(newFilters.semester);
         setLocalCategory(newFilters.category);
+
+        setIsFilterBoxOpen(false);
+    };
+
+    const clearFilters = () => {
+        setLocalHostelFacility("All");
+        setLocalAcademicSession("All");
+        setLocalProgram("All");
+        setLocalSemester("All");
+        setLocalCategory("All");
+        setLocalSearchQuery("");
+
+        dispatch(updateFilters({
+            hostelFacility: "All",
+            academicSession: "All",
+            program: "All",
+            semester: "All",
+            category: "All",
+        }));
+
+        dispatch(updateSearchQuery(""));
+        dispatch(fetchStudents());
 
         setIsFilterBoxOpen(false);
     };
@@ -147,13 +169,22 @@ const Header = () => {
                                 onChange={(e) => setLocalCategory(e.target.value)}
                             />
                         </div>
-                        <Button
-                            type="submit"
-                            className="rounded-xl text-lg bg-primary-color hover:bg-[#6235b1] text-nav-white outline-none focus:bg-gray-50 duration-200 w-[30%] my-4"
-                            onClick={applyFilters}
-                        >
-                            Apply Filter
-                        </Button>
+                        <div className="flex items-center px-2">
+                            <Button
+                                type="submit"
+                                className="rounded-xl text-lg bg-primary-color hover:bg-[#6235b1] text-nav-white outline-none focus:bg-gray-50 duration-200 w-[50%] my-2"
+                                onClick={applyFilters}
+                            >
+                                Apply Filter
+                            </Button>
+                            <Button
+                                type="button"
+                                className="rounded-xl text-lg bg-primary-color hover:bg-[#6235b1] text-nav-white outline-none focus:bg-gray-50 duration-200 w-[60%] my-2"
+                                onClick={clearFilters}
+                            >
+                                Clear All Filters
+                            </Button>
+                        </div>
                     </div>
                     }
                 </div>

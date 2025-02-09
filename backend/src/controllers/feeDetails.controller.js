@@ -3,15 +3,10 @@ import FeeDetails from "../models/feeDetails.model.js";
 export const getFilteredStudents = async (req, res) => {
   try {
     let { searchQuery, hostelFacility, academicSession, program, semester, category } = req.query;
-
-    console.log("Query params", req.query);
     
     if (!searchQuery || typeof searchQuery !== "string" || searchQuery.trim() === "") {
       searchQuery = null;
     }
-    
-    
-    // console.log("Searching...", searchQuery);
 
     const query = {};
     if (hostelFacility && hostelFacility !== "All") query.availingHostel = hostelFacility;
@@ -27,8 +22,6 @@ export const getFilteredStudents = async (req, res) => {
     }
 
     const filteredStudents = Object.keys(query).length === 0 ? await FeeDetails.find({}) : await FeeDetails.find(query);
-
-    // console.log("Filtered students", filteredStudents);
 
     res.status(200).json(filteredStudents);
   } catch (error) {

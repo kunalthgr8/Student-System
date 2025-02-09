@@ -1,27 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-// export const fetchStudents = createAsyncThunk(
-//     "students/fetchStudents",
-//     async (filters) => {
-//         // console.log(filters);
-//         const cleanFilters = {
-//             searchQuery: filters?.searchQuery?.trim() || "",
-//             hostelFacility: filters?.hostelFacility || "",
-//             academicSession: filters?.academicSession || "",
-//             program: filters?.program || "",
-//             semester: filters?.semester || "",
-//             category: filters?.category || ""
-//         };
-
-//         const queryParams = new URLSearchParams(cleanFilters).toString();
-
-//         console.log("Query params", queryParams);
-
-//         const response = await fetch(`http://localhost:8000/api/data/students/filtered?${queryParams}`);
-//         return await response.json();
-//     }
-// );
-
 export const fetchStudents = createAsyncThunk(
     "students/fetchStudents",
     async (_, { getState }) => {

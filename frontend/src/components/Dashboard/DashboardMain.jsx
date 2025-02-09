@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchStudents } from "../../app/features/studentSlice";
 
@@ -12,23 +12,13 @@ import { saveAs } from "file-saver";
 import { HiOutlineDownload } from "react-icons/hi";
 
 
-const DashboardMain = ({ searchQuery, hostelFacility, academicSession, program, semester, category }) => {
+const DashboardMain = () => {
     const dispatch = useDispatch();
     const { studentsData, loading, filters = {} } = useSelector((state) => state.students);
 
     useEffect(() => {
         dispatch(fetchStudents(filters));
     }, [dispatch, filters]);
-
-    // const searchQuery = useSelector((state) => state.search.query);
-
-    // const [studentsData, setStudentsData] = useState([]);
-    // const [loading, setLoading] = useState(true);
-    // const [hostelFacility, setHostelFacility] = useState("");
-    // const [academicSession, setAcademicSession] = useState("");
-    // const [program, setProgram] = useState("");
-    // const [semester, setSemester] = useState("");
-    // const [category, setCategory] = useState("");
 
     const columns = [
         { label: "Availing Hostel Facility", key: 'availingHostel', rowWidth: "100" },

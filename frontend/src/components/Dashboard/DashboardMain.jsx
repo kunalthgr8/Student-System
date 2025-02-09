@@ -5,8 +5,6 @@ import { fetchStudents } from "../../app/features/studentSlice";
 import Header from "../Header/Header";
 import Sidebar from "../Sidebar/Sidebar";
 import Loader from "../../assets/Loader.webm";
-import Button from "../Button/Button";
-import FilterFields from "./FilterFields";
 
 import * as XLSX from 'xlsx';
 import { saveAs } from "file-saver";

@@ -8,13 +8,18 @@ import { PiGearBold } from "react-icons/pi";
 import { useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { updateSearchQuery } from "../../app/features/studentSlice";
+import { updateFilters, updateSearchQuery } from "../../app/features/studentSlice";
 import FilterFields from "../Dashboard/FilterFields";
 import Button from "../Button/Button";
 
 const Header = () => {
     const [isFocused, setIsFocused] = useState(false);
     const [localSearchQuery, setLocalSearchQuery] = useState("");
+    const [localHostelFacility, setLocalHostelFacility] = useState("All");
+    const [localAcademicSession, setLocalAcademicSession] = useState("All");
+    const [localProgram, setLocalProgram] = useState("All");
+    const [localSemester, setLocalSemester] = useState("All");
+    const [localCategory, setLocalCategory] = useState("All");
     const [isFilterBoxOpen, setIsFilterBoxOpen] = useState(false);
 
     const dispatch = useDispatch();
@@ -29,11 +34,6 @@ const Header = () => {
         setLocalSearchQuery(e.target.value);
     };
 
-    const handleFilterChange = (e) => {
-        dispatch(updateFilter({ name: e.target.name, value: e.target.value }));
-    };
-    
-
     const handleSearchKeyDown = (e) => {
         if (e.key === "Enter") {
             dispatch(updateSearchQuery(localSearchQuery));
@@ -45,16 +45,19 @@ const Header = () => {
         setIsFilterBoxOpen(!isFilterBoxOpen);
     };
 
-    // const applyFilters = () => {
-    //     dispatch(fetchStudents(filters));
-    //     setIsFilterBoxOpen(false);
-    // };
-
     const applyFilters = () => {
-        dispatch(fetchStudents()); 
+        dispatch(updateFilters({
+            hostelFacility: localHostelFacility,
+            academicSession: localAcademicSession,
+            program: localProgram,
+            semester: localSemester,
+            category: localCategory,
+        }));
+
+        dispatch(fetchStudents());
         setIsFilterBoxOpen(false);
     };
-    
+
 
     return (
         <div className="sticky top-0 left-0 z-10 flex items-center gap-3 w-full h-20 p-4 bg-nav-white">
@@ -89,40 +92,40 @@ const Header = () => {
                                 labelTag="Hostel Facility: "
                                 selectID="hostelFacility"
                                 options={["All", "Yes", "No"]}
-                                value={hostelFacility}
-                                onChange={handleFilterChange}
+                                value={localHostelFacility}
+                                onChange={(e) => setLocalHostelFacility(e.target.value)}
                             />
                             <FilterFields
                                 labelHTML="academicSession"
                                 labelTag="Academic Session: "
                                 selectID="academicSession"
                                 options={["All", "2023-24M", "2023-24W", "2024-25M", "2024-25W"]}
-                                value={academicSession}
-                                onChange={handleFilterChange}
+                                value={localAcademicSession}
+                                onChange={(e) => setLocalAcademicSession(e.target.value)}
                             />
                             <FilterFields
                                 labelHTML="program"
                                 labelTag="Program: "
                                 selectID="program"
                                 options={["All", "B.Tech", "M.Tech", "M.Sc.", "PhD"]}
-                                value={program}
-                                onChange={handleFilterChange}
+                                value={localProgram}
+                                onChange={(e) => setLocalProgram(e.target.value)}
                             />
                             <FilterFields
                                 labelHTML="semester"
                                 labelTag="Semester: "
                                 selectID="semester"
                                 options={["All", "1", "2", "3", "4", "5", "6", "7", "8"]}
-                                value={semester}
-                                onChange={handleFilterChange}
+                                value={localSemester}
+                                onChange={(e) => setLocalSemester(e.target.value)}
                             />
                             <FilterFields
                                 labelHTML="category"
                                 labelTag="Category: "
                                 selectID="category"
                                 options={["All", "General", "OBC-NCL", "SC", "ST"]}
-                                value={category}
-                                onChange={handleFilterChange}
+                                value={localCategory}
+                                onChange={(e) => setLocalCategory(e.target.value)}
                             />
                         </div>
                         <Button

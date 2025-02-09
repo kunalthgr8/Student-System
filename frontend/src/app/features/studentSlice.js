@@ -12,7 +12,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 //             semester: filters?.semester || "",
 //             category: filters?.category || ""
 //         };
-        
+
 //         const queryParams = new URLSearchParams(cleanFilters).toString();
 
 //         console.log("Query params", queryParams);
@@ -64,10 +64,12 @@ const studentsSlice = createSlice({
         updateSearchQuery: (state, action) => {
             state.filters.searchQuery = action.payload;
         },
-        updateFilter: (state, action) => {
-            const { name, value } = action.payload;
-            state.filters[name] = value;
-        }
+        updateFilters: (state, action) => {
+            state.filters = { ...state.filters, ...action.payload };
+        },
+        fetchStudentsSuccess: (state, action) => {
+            state.data = action.payload;
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -86,5 +88,5 @@ const studentsSlice = createSlice({
     }
 });
 
-export const { updateSearchQuery, updateFilter } = studentsSlice.actions;
+export const { updateSearchQuery, updateFilters, fetchStudentsSuccess } = studentsSlice.actions;
 export default studentsSlice.reducer;

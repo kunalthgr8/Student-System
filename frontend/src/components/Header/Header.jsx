@@ -13,6 +13,10 @@ import FilterFields from "../Dashboard/FilterFields";
 import Button from "../Button/Button";
 
 const Header = () => {
+    const [isFocused, setIsFocused] = useState(false);
+    const [localSearchQuery, setLocalSearchQuery] = useState("");
+    const [isFilterBoxOpen, setIsFilterBoxOpen] = useState(false);
+
     const dispatch = useDispatch();
     const searchQuery = useSelector((state) => state.students.filters.searchQuery);
     const hostelFacility = useSelector((state) => state.students.filters.hostelFacility);
@@ -22,20 +26,35 @@ const Header = () => {
     const category = useSelector((state) => state.students.filters.category);
 
     const handleSearchChange = (e) => {
-        dispatch(updateSearchQuery(e.target.value));
+        setLocalSearchQuery(e.target.value);
     };
 
-    const [isFocused, setIsFocused] = useState(false);
-    const [isFilterBoxOpen, setIsFilterBoxOpen] = useState(false);
+    const handleFilterChange = (e) => {
+        dispatch(updateFilter({ name: e.target.name, value: e.target.value }));
+    };
+    
+
+    const handleSearchKeyDown = (e) => {
+        if (e.key === "Enter") {
+            dispatch(updateSearchQuery(localSearchQuery));
+            e.preventDefault();
+        }
+    };
 
     const toggleFilterBox = () => {
         setIsFilterBoxOpen(!isFilterBoxOpen);
     };
 
+    // const applyFilters = () => {
+    //     dispatch(fetchStudents(filters));
+    //     setIsFilterBoxOpen(false);
+    // };
+
     const applyFilters = () => {
-        dispatch(fetchStudents(filters));
+        dispatch(fetchStudents()); 
         setIsFilterBoxOpen(false);
     };
+    
 
     return (
         <div className="sticky top-0 left-0 z-10 flex items-center gap-3 w-full h-20 p-4 bg-nav-white">
@@ -51,10 +70,11 @@ const Header = () => {
                     type="search"
                     placeholder="Search..."
                     className="w-[60%] p-2 border-none bg-[transparent] outline-none"
-                    value={searchQuery}
+                    value={localSearchQuery}
                     onFocus={() => setIsFocused(true)}
                     onBlur={() => setIsFocused(false)}
                     onChange={handleSearchChange}
+                    onKeyDown={handleSearchKeyDown}
                 />
                 <div className="border-none p-1 bg-primary-light-color text-primary-color rounded-md hover:bg-primary-color hover:text-nav-white cursor-pointer ml-auto" >
                     <GiSettingsKnobs className="text-xl bg-[transparent] m-1 transition ease-out duration-500" onClick={toggleFilterBox} />
@@ -70,6 +90,7 @@ const Header = () => {
                                 selectID="hostelFacility"
                                 options={["All", "Yes", "No"]}
                                 value={hostelFacility}
+                                onChange={handleFilterChange}
                             />
                             <FilterFields
                                 labelHTML="academicSession"
@@ -77,6 +98,7 @@ const Header = () => {
                                 selectID="academicSession"
                                 options={["All", "2023-24M", "2023-24W", "2024-25M", "2024-25W"]}
                                 value={academicSession}
+                                onChange={handleFilterChange}
                             />
                             <FilterFields
                                 labelHTML="program"
@@ -84,6 +106,7 @@ const Header = () => {
                                 selectID="program"
                                 options={["All", "B.Tech", "M.Tech", "M.Sc.", "PhD"]}
                                 value={program}
+                                onChange={handleFilterChange}
                             />
                             <FilterFields
                                 labelHTML="semester"
@@ -91,6 +114,7 @@ const Header = () => {
                                 selectID="semester"
                                 options={["All", "1", "2", "3", "4", "5", "6", "7", "8"]}
                                 value={semester}
+                                onChange={handleFilterChange}
                             />
                             <FilterFields
                                 labelHTML="category"
@@ -98,6 +122,7 @@ const Header = () => {
                                 selectID="category"
                                 options={["All", "General", "OBC-NCL", "SC", "ST"]}
                                 value={category}
+                                onChange={handleFilterChange}
                             />
                         </div>
                         <Button

@@ -5,7 +5,7 @@ import { GoBell } from "react-icons/go";
 import { FaUser } from "react-icons/fa";
 import { GoGear } from "react-icons/go";
 import { PiGearBold } from "react-icons/pi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { updateFilters, updateSearchQuery } from "../../app/features/studentSlice";
@@ -13,15 +13,7 @@ import FilterFields from "../Dashboard/FilterFields";
 import Button from "../Button/Button";
 
 const Header = () => {
-    const [isFocused, setIsFocused] = useState(false);
-    const [localSearchQuery, setLocalSearchQuery] = useState("");
-    const [localHostelFacility, setLocalHostelFacility] = useState("All");
-    const [localAcademicSession, setLocalAcademicSession] = useState("All");
-    const [localProgram, setLocalProgram] = useState("All");
-    const [localSemester, setLocalSemester] = useState("All");
-    const [localCategory, setLocalCategory] = useState("All");
-    const [isFilterBoxOpen, setIsFilterBoxOpen] = useState(false);
-
+    
     const dispatch = useDispatch();
     const searchQuery = useSelector((state) => state.students.filters.searchQuery);
     const hostelFacility = useSelector((state) => state.students.filters.hostelFacility);
@@ -30,6 +22,24 @@ const Header = () => {
     const semester = useSelector((state) => state.students.filters.semester);
     const category = useSelector((state) => state.students.filters.category);
 
+    const [isFocused, setIsFocused] = useState(false);
+    const [localSearchQuery, setLocalSearchQuery] = useState("");
+    const [localHostelFacility, setLocalHostelFacility] = useState(hostelFacility);
+    const [localAcademicSession, setLocalAcademicSession] = useState(academicSession);
+    const [localProgram, setLocalProgram] = useState(program);
+    const [localSemester, setLocalSemester] = useState(semester);
+    const [localCategory, setLocalCategory] = useState(category);
+    const [isFilterBoxOpen, setIsFilterBoxOpen] = useState(false);
+
+    useEffect(() => {
+        setLocalHostelFacility(hostelFacility);
+        setLocalAcademicSession(academicSession);
+        setLocalProgram(program);
+        setLocalSemester(semester);
+        setLocalCategory(category);
+    }, [hostelFacility, academicSession, program, semester, category]);
+    
+    
     const handleSearchChange = (e) => {
         setLocalSearchQuery(e.target.value);
     };
@@ -46,17 +56,26 @@ const Header = () => {
     };
 
     const applyFilters = () => {
-        dispatch(updateFilters({
+        const newFilters = {
             hostelFacility: localHostelFacility,
             academicSession: localAcademicSession,
             program: localProgram,
             semester: localSemester,
             category: localCategory,
-        }));
+        };
 
+        dispatch(updateFilters(newFilters));
         dispatch(fetchStudents());
+
+        setLocalHostelFacility(newFilters.hostelFacility);
+        setLocalAcademicSession(newFilters.academicSession);
+        setLocalProgram(newFilters.program);
+        setLocalSemester(newFilters.semester);
+        setLocalCategory(newFilters.category);
+
         setIsFilterBoxOpen(false);
     };
+
 
 
     return (

@@ -11,7 +11,8 @@ export const fetchStudents = createAsyncThunk(
             academicSession: filters?.academicSession || "",
             program: filters?.program || "",
             semester: filters?.semester || "",
-            category: filters?.category || ""
+            category: filters?.category || "",
+            feeWaiver: filters?.feeWaiver || ""
         };
 
         const queryParams = new URLSearchParams(cleanFilters).toString();
@@ -35,7 +36,8 @@ const studentsSlice = createSlice({
             academicSession: "",
             program: "",
             semester: "",
-            category: ""
+            category: "",
+            feeWaiver: ""
         }
     },
     reducers: {

@@ -26,6 +26,7 @@ export default {
       "primary-light-color": "#ede7f6",
       "secondary-color": "#2196f3"
     },
+    important: true,
   },
   plugins: [],
 };

@@ -2,7 +2,7 @@ import FeeDetails from "../models/feeDetails.model.js";
 
 export const getFilteredStudents = async (req, res) => {
   try {
-    let { searchQuery, hostelFacility, academicSession, program, semester, category } = req.query;
+    let { searchQuery, hostelFacility, academicSession, program, semester, category, feeWaiver } = req.query;
     
     if (!searchQuery || typeof searchQuery !== "string" || searchQuery.trim() === "") {
       searchQuery = null;
@@ -14,6 +14,7 @@ export const getFilteredStudents = async (req, res) => {
     if (program && program !== "All") query.program = program;
     if (semester && semester !== "All") query.semester = parseInt(semester, 10);
     if (category && category !== "All") query.category = category;
+    if (feeWaiver && feeWaiver !== "All") query.feeWaiver = feeWaiver === "Yes" ? { $gt: 0 } : 0;
     if (searchQuery) {
       query.$or = [
         { candidateName: { $regex: searchQuery, $options: "i" } },

@@ -20,6 +20,7 @@ const Header = () => {
     const program = useSelector((state) => state.students.filters.program);
     const semester = useSelector((state) => state.students.filters.semester);
     const category = useSelector((state) => state.students.filters.category);
+    const feeWaiver = useSelector((state) => state.students.filters.feeWaiver);
 
     const [isFocused, setIsFocused] = useState(false);
     const [localSearchQuery, setLocalSearchQuery] = useState("");
@@ -28,6 +29,7 @@ const Header = () => {
     const [localProgram, setLocalProgram] = useState(program);
     const [localSemester, setLocalSemester] = useState(semester);
     const [localCategory, setLocalCategory] = useState(category);
+    const [localFeeWaiver, setLocalFeeWaiver] = useState("All");
     const [isFilterBoxOpen, setIsFilterBoxOpen] = useState(false);
 
     useEffect(() => {
@@ -36,7 +38,8 @@ const Header = () => {
         setLocalProgram(program);
         setLocalSemester(semester);
         setLocalCategory(category);
-    }, [hostelFacility, academicSession, program, semester, category]);
+        setLocalFeeWaiver(feeWaiver)
+    }, [hostelFacility, academicSession, program, semester, category, feeWaiver]);
 
 
     const handleSearchChange = (e) => {
@@ -61,7 +64,14 @@ const Header = () => {
             program: localProgram,
             semester: localSemester,
             category: localCategory,
+            feeWaiver: localFeeWaiver,
         };
+
+        // if (localFeeWaiver === "Yes") {
+        //     filters.feeWaiver = ">0";
+        // } else if (localFeeWaiver === "No") {
+        //     filters.feeWaiver = "0";
+        // }
 
         dispatch(updateFilters(newFilters));
         dispatch(fetchStudents());
@@ -71,6 +81,7 @@ const Header = () => {
         setLocalProgram(newFilters.program);
         setLocalSemester(newFilters.semester);
         setLocalCategory(newFilters.category);
+        setLocalFeeWaiver(newFilters.feeWaiver);
 
         setIsFilterBoxOpen(false);
     };
@@ -81,6 +92,7 @@ const Header = () => {
         setLocalProgram("All");
         setLocalSemester("All");
         setLocalCategory("All");
+        setLocalFeeWaiver("All");
         setLocalSearchQuery("");
 
         dispatch(updateFilters({
@@ -89,6 +101,7 @@ const Header = () => {
             program: "All",
             semester: "All",
             category: "All",
+            feeWaiver: "All",
         }));
 
         dispatch(updateSearchQuery(""));
@@ -125,7 +138,7 @@ const Header = () => {
                     {isFilterBoxOpen &&
                         <div
                             id="filterBox"
-                            className="absolute border border-secondary-color hover:text-primary-color p-4 rounded-md shadow-md top-20 right-5 z-5 cursor-default"
+                            className="absolute border border-secondary-color p-4 rounded-md shadow-md top-20 right-5 z-5 cursor-default hover:text-primary-color"
                         >
                             <div className="flex items-center justify-between">
                                 <p>Choose the options from fields below</p>
@@ -177,6 +190,14 @@ const Header = () => {
                                     options={["All", "General", "OBC-NCL", "SC", "ST"]}
                                     value={localCategory}
                                     onChange={(e) => setLocalCategory(e.target.value)}
+                                />
+                                <FilterFields
+                                    labelHTML="feeWaiver"
+                                    labelTag="Fee Waiver: "
+                                    selectID="feeWaiver"
+                                    options={["All", "Yes", "No"]}
+                                    value={localFeeWaiver}
+                                    onChange={(e) => setLocalFeeWaiver(e.target.value)}
                                 />
                             </div>
                             <div className="flex items-center px-2">
